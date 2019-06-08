@@ -39,7 +39,7 @@ def fetch_reply(msg,session_id):
         news_str='Here are your news:'
         for row in news: 
             news_str+="\n\n{}\n\n{}\n\n".format(row['title'],row['link']) 
-        return news_str
+        return news_str,'',''
 
     elif response.intent.display_name=='get_weather':
         owm = pyowm.OWM('2242ac01869a406a63e2cf1f430724ef')
@@ -61,7 +61,7 @@ def fetch_reply(msg,session_id):
         weather+="\ntemprature: {} °c\n".format(temprature)
         weather+="\nhumidity : {}\n".format(humidity)
         weather+="\nwind speed: {}\n".format(wind)
-        return weather
+        return weather,'',''
         
     elif response.intent.display_name=="get_makeup":
         makeup=dict(response.parameters)
@@ -85,12 +85,12 @@ def fetch_reply(msg,session_id):
             data=''
             for i in range(0,2,1):
                 data+="Product Name and Price : {} {}".format(content_data[i]['name'],content_data[i]['price'])
-                data+="Product Description\n {}\n".format(content_data[i]['description'])
-                data+="Product Link\n {}\n\n".format(content_data[i]['product_link'])
+                data+="\nProduct Description: {}\n".format(content_data[i]['description'])
+                data+="\nProduct Link:\n {}\n\n".format(content_data[i]['product_link'])
             print(len(data))
-            return data
+            return data,'',''
         else:
-            return "Product not available"
+            return "Product not available",'',''
 
     elif response.intent.display_name=="get_dictionary":
         dictionary=dict(response.parameters)
@@ -106,19 +106,19 @@ def fetch_reply(msg,session_id):
             data="Meaning of {} is {}".format(word_id,content_data["results"][0]["lexicalEntries"][0]["entries"][0]["senses"][0]["definitions"][0])
             userdata={'word':word_id,'time':get_time()}
             insertdata(userdata)
-            return data
+            return data,'',''
         else:
-            return "No meaning found"
+            return "No meaning found",'',''
 
     elif response.intent.display_name=="get_company":
         company=dict(response.parameters)
         company_name=company.get('company_name')
         company_data=wikipedia.summary(company_name, sentences=2)
-        page_image = wikipedia.page(company_name).images[0]
+        page_image = wikipedia.page(company_name).images[1]
         return company_data,page_image,"type2"
 
     else:
-        return response.fulfillment_text
+        return response.fulfillment_text,'',''
 
 
 def get_intent(msg,session_id):
