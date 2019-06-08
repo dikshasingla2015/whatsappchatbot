@@ -20,7 +20,6 @@ def sms_reply():
     print(request.form)
     msg = request.form.get('Body')
     sender=request.form.get('From')
-
     # Create reply
     resp = MessagingResponse()
     """if utils.get_intentname(msg,sender)=="get_comapny":
