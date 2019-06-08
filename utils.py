@@ -6,6 +6,8 @@ import requests
 import json
 import os
 import pyowm
+import wikipedia
+import urllib.request
 
 from database import insertdata,get_time
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "chatbot.json"
@@ -107,6 +109,14 @@ def fetch_reply(msg,session_id):
             return data
         else:
             return "No meaning found"
+
+    elif response.intent.display_name=="get_company":
+        company=dict(response.parameters)
+        company_name=company.get('company_name')
+        company_data=wikipedia.summary(company_name, sentences=2)
+        page_image = wikipedia.page(company_name).images[0]
+        return company_data,page_image,"type2"
+
     else:
         return response.fulfillment_text
 

@@ -25,7 +25,11 @@ def sms_reply():
     resp = MessagingResponse()
     """if utils.get_intentname(msg,sender)=="get_comapny":
         resp.message(fetch_reply(msg,sender)).media(wikipedia.page())"""
-    resp.message(fetch_reply(msg,sender))
+    reply_data,msg,type_data=fetch_reply(msg,sender)
+    if type_data=="type2":
+        resp.message(reply_data).media(msg)
+    else:
+        resp.message(reply_data)
     #resp.message("You said: {}".format(msg))
     #.media("https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500")
     return str(resp)
